@@ -16,16 +16,17 @@ class Route {
     public $base = "/oop/";
     
 
-    public  function __call($name , $args)
-    {
-        if(in_array(strtoupper($name), self::$validTypes))
-        {
-            print "okay";
-  
-        }
-    }
     
-
+    /**
+     * add the routes to array of all routes and every method array
+     *
+     * @param [type] $type
+     * @param [type] $uri
+     * @param [type] $route
+     * @param [type] $action
+     * @param [type] $name
+     * @return void
+     */
     public  function map($type, $uri, $route, $action, $name = null) 
     {    
         
