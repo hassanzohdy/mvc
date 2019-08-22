@@ -1,0 +1,4 @@
+nedded 
+    public functions to all app
+    /app/post/55
+    

@@ -4,8 +4,9 @@
 
 
 $router = new Core\Route();
-$router->map("post","get",'PostController#index');
-$router->map("home","get",'HomeController#index');
+$router->get("home",'HomeController#index');
+// $router->get("mega",'PostController#index');
+// $router->post("home",'HomeController#index');
 
 
 ?>
