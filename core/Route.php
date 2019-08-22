@@ -42,6 +42,15 @@ class Route {
          
     }
 
+    /**
+     *  check for correct route then load it's controller
+     *
+     * @param [type] $uri
+     * @param [type] $route
+     * @param [type] $function
+     * @param [type] $type
+     * @return void
+     */
     public function generate($uri,$route,$function,$type)
     { 
       if (in_array($route, $this->$type) && $uri == $this->base.$route){
@@ -80,9 +89,6 @@ class Route {
      * @return void
      */
     public function get (string $route,string $action,string $name = NULL){
-        $r = new Request;
-        print_r($r->getBody());
-
 
         if ($_SERVER["REQUEST_METHOD"] == "GET"){         
            $uri =  $_SERVER['REQUEST_URI'];
