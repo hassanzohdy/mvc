@@ -3,7 +3,7 @@
 use App\Controllers\Controller;
 class PostController extends Controller {
 
-    public  function index()
+    public  function index($r , $arg)
     {       
         echo "this is post";
     }

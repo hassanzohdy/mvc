@@ -1,3 +1,9 @@
+router 
+    query string
+    parameter handler
+
+middleware
+
 nedded 
     public functions to all app
     /app/post/55
