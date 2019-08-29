@@ -1,16 +1,14 @@
 # mvc
 ## class Route 
       
-    Route class responsible for routing for the app, and controll the request 
-    it has methods:
-       public methods
-            add(string: type, string: route , string: contrller) : add the specific route to  array of allowed routes
-            load() run the app by accept the request url and check for the right route
-        
-        private methods 
-            Match():match the current url request with allowed routes if matched call map() function with this route as param
-                     if not match any route call a notFound() function
-            map(array route): calling two function getClass and then callFunction;
-            getClass(string action): get the controller class
-            callFunction(string classname): calling this function
-            
+    Route class responsible for routing the app, and controlls the request
+    it stores the allowed routes and then cheaks for the right route which is matching the url and method type. 
+    then load the controller function that is passed as argument to the class
+
+    ```php
+    $router = new Core\Route();
+    $route->add("get","/home", "HomeController@index");
+    $route->add("get","/posts", "Postcontroller@index");
+    $route->run();
+    ```
+    
