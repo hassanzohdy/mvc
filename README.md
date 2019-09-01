@@ -1,15 +1,10 @@
-# mvc
-## class Route 
-      
-Route class responsible for routing the app, and controlls the request
-it stores the allowed routes and then cheaks for the right route which is matching the url and method type. 
+### Class Request
 
-Then load the controller function that is passed as argument to the class
+Class request retrives the data from the request , spliting the data into categoris.     
 
-```php
-$router = new Core\Route();
-$route->add("get","/home", "HomeController@index");
-$route->add("get","/posts", "Postcontroller@index");
-$route->run();
-```
-    
+Provid custom functions to get the data from the request like :
+* Get data
+* Post data
+* File 
+
+And abilty to make simple validation for the request.
