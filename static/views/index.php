@@ -69,7 +69,7 @@ a {
 </head>
 <body>
 
-<form action="/oop/test" method="post" >
+<form action="/oop/post" method="POST" >
   <div class="container">
    
     <label for="psw"><b>Password</b></label>

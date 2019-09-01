@@ -1,19 +1,15 @@
 <?php
-// namespace App\Controllers;
+namespace App\Controllers;
 use App\Controllers\Controller;
-use Core\View;
 class HomeController extends Controller {
     
-    public  function index($request,$arg)
-    {   
-       
-       
-        new View("index","alaa");
+    public  function index(\Core\Request $request)
+    {         
+         view("index","alaa");
     }
-    public  function create($request,$arg)
+    public  function test()
     {    
-       
-        print_r(json_encode($_SERVER));
+        redirect("/home");
     }
 }
 

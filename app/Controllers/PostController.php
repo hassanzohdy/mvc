@@ -1,13 +1,17 @@
 <?php
-// namespace App\Controllers;
+namespace App\Controllers;
 use App\Controllers\Controller;
+use Core\Request;
 class PostController extends Controller {
 
-    public  function index($r , $arg)
-    {       
-        echo "this is post";
+    public  function index()
+    {         
+        view("index","alaa");
     }
-
+    public  function create(Request $request)
+    {    
+               print_r(json_encode($_SERVER));
+    }
 }
 
 ?>

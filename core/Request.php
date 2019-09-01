@@ -1,6 +1,7 @@
 <?php
 namespace Core;
-class Request {
+class Request 
+{
     public $get_data;
     public $post_data;
     public $path;
@@ -13,7 +14,7 @@ class Request {
        $this->collectData();
     }
     
-    public function collectData()
+    protected function collectData()
     {
         $this->get_data = $_GET;
         $this->post_data = $_POST;
@@ -33,9 +34,9 @@ class Request {
     /**
      *  return the data of the get method
      *
-     * @return post_data
+     * @return array
      */
-    public function postData()
+    public function postData(): array
     {      
         return $this->post_data;
     }
@@ -45,4 +46,9 @@ class Request {
        return str_replace("oop/","",$_SERVER['REDIRECT_URL']) ;
     }
 
+    // public function validate(array $d)
+    // {
+
+       
+    // }
 }

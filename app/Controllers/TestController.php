@@ -1,10 +1,10 @@
 <?php
-
+namespace App\Controllers;
 use App\Controllers\Controller;
 use Core\View;
 class TestController extends Controller {
     
-    public  function create($request,$arguments)
+    public  function create()
     {   
         // print_r($_REQUEST['url']);
 

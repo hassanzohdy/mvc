@@ -1,0 +1,11 @@
+Object-Relational Mapping is Technique to communicate with relational database from object oriented program.
+
+## How Does ORM Work?
+
+## Pros of using an ORM.
+* It abstracts away the database system so that switching from MySQL to PostgreSQL, or anything else  is easy.
+* most of programs don't like to write SQL all the time , it will help us to avoid writing sql again and again.
+* DRY: it saves a lot of time ,you will only write the code once then reuse it
+*  Hides and encapsulates change in the data source itself, so that when data sources or their APIs change, only ORM needs to change to keep up 
+
+## Cons of using an ORM?

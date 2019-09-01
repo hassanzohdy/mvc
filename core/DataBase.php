@@ -9,7 +9,7 @@ Class Connection {
 
     public function __CONSTRUCt (Type $var = null)
     {
-      if 
+    
     }
      
         public function openConnection() 

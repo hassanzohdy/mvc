@@ -1,10 +1,10 @@
-router 
-    query string
-    parameter handler
+### Class Request
 
-middleware
+Class request retrives the data from the request , spliting the data into categoris.     
 
-nedded 
-    public functions to all app
-    /app/post/55
-    
+Provid custom functions to get the data from the request like :
+* Get data
+* Post data
+* File 
+
+And abilty to make simple validation for the request.

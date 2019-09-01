@@ -1,172 +1,112 @@
 <?php
-
 namespace Core;
-use App\Controllers ;
 use Core\Request;
-/**
- * Route class responsiple for routing the app
- */
-class Route {
-   
-    public $allRoutes = array();
-    protected $postRoutes = array();
-    protected $getRoutes = array();
-    public $request;
-    
-    public $base = "/oop/";
-    
+use Core\AppReflector;
+class Route
+{   
+    public $routes = [];
 
-
-    /**
+     /**
      * Construct  of the class
      * making new request object
      */
-    public function __construct(){
-      $this->request = new Request();
+    public function __construct()
+    {
+        $this->request = new Request();
     }
     
     /**
-     * add the routes to array of all routes and every method array
-     * call load method
-     * @param [string] $type
-     * @param [string] $route
-     * @param [type] $action
-     * @param [string] $name
+     * add route to array of the routes of the app 
+     *
+     * @param string $method
+     * @param string $route
+     * @param string $action
      * @return void
      */
-    public  function map(string $type,string $route, $action,string $name = null) 
-    {            
-        $type = ($type . "Routes");
-        $pattern = $this->generatePattern($route);
-        $this->allRoutes = array("route" => $pattern);
-        $arguments =  $this->getArguments($pattern);
-        $this->$type = array(
-          "route" => $route,
-          "action" => $action,
-          "name" =>$name,
-          "arg" => $arguments,
-        );        
-        $this->load($route,$action,$arguments,$type);        
+    public function add (string $method,string $route,string $action )
+    {   
+        $this->routes[]= [$method,$route,$action];
+    }
+    
+
+    /**
+     * match the current url with stored routes if not found return not found page
+     *
+     * @return void
+     */
+    public function load()
+    {
+        foreach ($this->routes as  $route) {
+            if($this->isMatching($route)){
+                return $this->controllerTriger($route[2]);         
+            } 
+
+           
+        }
+       return  view("error");
+    }
+
+    /**
+     * cheack if current request match specific route 
+     *
+     * @param array $route
+     * @return boolean
+     */
+    public function isMatching(array $route)
+    {
+      $pattern =  $this->generatePattern($route[1]);
+      return $_SERVER['REQUEST_METHOD'] == strtoupper($route[0]) & preg_match($pattern, $this->request->url());
     }
 
 
     /**
-     * generate new pattern of the route 
+     * generate a pattern for route 
      *
      * @param string $url
-     * @return pattern
+     * @return string
      */
-    public function generatePattern(string $url)
+    public function generatePattern(string $url) :string
     {
       $pattern  = "#^";
       $pattern .= str_replace([':text', ':id'], ['([a-zA-Z0-9z]+)','(\d+)'],$url);
       $pattern .="$#";
       return $pattern;
     }
+    
 
-    public function getArguments($pattern)
+    /**
+     * get the arguments from the url  
+     *
+     * @param [type] $pattern
+     * @return array
+     */
+    public function getArguments($pattern) :array
     {
       preg_match($pattern, $this->request->url(),$matches);
       array_shift($matches);
       return $matches;
-
-     
     }
 
     /**
-     *  check for correct route then load it's controller
+     * Split up action into class and function then call the function
      *
-     * @param [string] $route
-     * @param [type] $function
-     * @param [array] $arguments
-     * @param [string] $type
+     * @param [type] $action
      * @return void
      */
-    public function load(string $route,$function,array $arguments,string $type)
-    {   
-      if ($this->isMatching($route)){
-        $controller = explode("@",$function);
-        $class = $controller[0];
-        $classFunction = $controller[1];          
-        $this->callFunction($class,$classFunction,$arguments);     
-      }     
-    }
-
-    /**
-     * loking for the function of specific class in Controllers folder 
-     *
-     * @param [type] $class
-     * @param [type] $classFunction
-     * @param [array] $classFunction
-     * @return void
-     */
-    public function callFunction($class,$classFunction,array $arguments)
+    public function controllerTriger($action)
     {
-      if(file_exists('./app/Controllers/'.$class.'.php')){
-          
-        require_once './app/Controllers/'.$class.'.php';
-        $tempClass = new $class();
-        try {
-          $r  = new Request();
-          $tempClass->$classFunction($r,$arguments);
-        } catch (\Throwable $th) {
-         print $th;
-        }
-          
-      } else {
-        throw new \Exception("Error Wrong class name", 1);
-        
-      } 
+      $controller = explode("@",$action);
+      $class = $controller[0];
+      $classFunction = $controller[1];     
+      $classNamespace = "App\Controllers\{$class}";
+      $classNamespace = str_replace(["{","}"],"",$classNamespace);
+      $app = new AppReflector($classNamespace);
+      $params =  $app->getMethodParams($classFunction);
+      $arg = [];
+      foreach ($params as $param) {
+         array_push($arg,new $param());
+      }
+      call_user_func_array(array($classNamespace,$classFunction,),$arg);
+      
     }
-
-    
-    /**
-     * get  function  check the methof of the request
-     * then call map function
-     * 
-     * @param string $route
-     * @param string $action
-     * @param string $name
-     * @return void
-     */
-    public function get (string $route,string $action,string $name = NULL){
-        
-      if ($_SERVER["REQUEST_METHOD"] == "GET"){         
-          
-           return $this->map("get",$route,$action,$name);
-
-      }  
-    }
-
-
-    /**
-     * Check if th current url match the pattern 
-     *
-     * @param string $route
-     * @return boolean
-     */
-    public function isMatching(string $route)
-    {
-      $pattern =  $this->generatePattern($route);
-      return preg_match($pattern, $this->request->url());
-    }
-
-
-    /**
-     * post  function  check the methof of the request
-     * then call map function
-     *
-     * @param string $route
-     * @param string $action
-     * @param string $name
-     * @return void
-     */
-    public function post (string $route,string $action,string $name = NULL){
-      if ($_SERVER["REQUEST_METHOD"] == "POST"){  
-        
-        return $this->map("post",$route,$action,$name);
-      } 
-    }
-
-  
 }
